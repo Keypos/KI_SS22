@@ -1,8 +1,20 @@
 # mein spaß 
-*.png 
-*.jpg
+mvtec_anomaly_detection/bottle/ 
+mvtec_anomaly_detection/cable/
+mvtec_anomaly_detection/carpet/ 
+mvtec_anomaly_detection/grid/
+mvtec_anomaly_detection/bottle/ 
+mvtec_anomaly_detection/leather/
+mvtec_anomaly_detection/pill/
+mvtec_anomaly_detection/screw/
+mvtec_anomaly_detection/tile/ 
+mvtec_anomaly_detection/toothbrush/
+mvtec_anomaly_detection/transistor/
+mvtec_anomaly_detection/wood/
+mvtec_anomaly_detection/zipper/
 
-# Byte-compiled / optimized / DLL files
+
+
 __pycache__/
 *.py[cod]
 *$py.class
