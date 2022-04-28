@@ -1,7 +1,7 @@
 from hashlib import new
 
 
-def read_and_label_Images_ground_truth(old_data_path, new_data_path,val_size):
+def read_and_label_Images_ground_truth(old_data_path, new_data_path, val_size):
     """
     Diese Funktion liest den mvtec Datensatz ein und speichert diesen in einem neuen Ordner ab. 
     Alle Bilder werden etntweder als good oder bad abgelegt. ground_truth wird dabei nicht berücksichtigt 
@@ -44,9 +44,11 @@ def read_and_label_Images_ground_truth(old_data_path, new_data_path,val_size):
         os.makedirs(new_data_path+'/validation/')
 
 
-
 # Daten in neues Verzeichnis kopieren
-    
+    temp_folder = new_data_path+'tmp/'
+    if not os.path.exists(new_data_path+'/tmp/'):
+        os.makedirs(new_data_path+'/tmp/')
+
     folder_list = ["/ground_truth"]
     counter = 0
     for member in range(len(objects)):
@@ -54,15 +56,26 @@ def read_and_label_Images_ground_truth(old_data_path, new_data_path,val_size):
             scr_dir2 = scr_dir+objects[member]+folder_list[i]
             labels = os.listdir(scr_dir2)
             for n in range(len(labels)):
-                if counter <= val_size:
-                    #print(glob.iglob(os.path.join(scr_dir2+labels[n], "*.png")))
-                    #print(os.path.join(scr_dir2+labels[n], "*.png"))
-                    for jpgfile in glob.iglob(os.path.join(scr_dir2+"/"+labels[n], "*.png")):
-                        filename = str(uuid.uuid4())+"_"+objects[member]
-                        shutil.copy(jpgfile, dst_dir +'/validation/'+filename+'.png')
-                else:
-                    for jpgfile in glob.iglob(os.path.join(scr_dir2+"/"+labels[n], "*.png")):
-                        filename = str(uuid.uuid4())+"_"+objects[member]
-                        shutil.copy(jpgfile, dst_dir +'/train/'+filename+'.png')
-                counter=counter+1
-                        
+
+                for jpgfile in glob.iglob(os.path.join(scr_dir2+"/"+labels[n], "*.png")):
+                    filename = str(uuid.uuid4())+"_"+objects[member]
+                    shutil.copy(jpgfile, temp_folder+filename+'.png')
+
+    # Anzahl aller Ground truth datan erfassen
+    img_count = os.listdir(temp_folder)
+    # berechnen der Validation größe
+    val_count = int(len(img_count)*val_size)
+
+    # Daten in train und Validation aufteilen
+
+    for i in range(len(img_count)):
+        if i <= val_count:
+            shutil.copy(temp_folder+img_count[i], dst_dir+'validation/')
+        else:
+            shutil.copy(temp_folder+img_count[i], dst_dir+'train/')
+    # temp_foler wieder löschen
+
+    try:
+        shutil.rmtree(temp_folder)
+    except OSError as e:
+        print("Error: %s - %s." % (e.filename, e.strerror))
