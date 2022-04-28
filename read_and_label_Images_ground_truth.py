@@ -1,7 +1,7 @@
 from hashlib import new
 
 
-def read_and_label_Images_only_objects(old_data_path, new_data_path):
+def read_and_label_Images_ground_truth(old_data_path, new_data_path,val_size):
     """
     Diese Funktion liest den mvtec Datensatz ein und speichert diesen in einem neuen Ordner ab. 
     Alle Bilder werden etntweder als good oder bad abgelegt. ground_truth wird dabei nicht berücksichtigt 
@@ -37,33 +37,32 @@ def read_and_label_Images_only_objects(old_data_path, new_data_path):
     if not os.path.exists(new_data_path):
         os.makedirs(new_data_path)
 
-    for member in range(len(objects)):
-        if not os.path.exists(new_data_path + objects[member]):
-            os.makedirs(new_data_path+objects[member])
-        if not os.path.exists(new_data_path + objects[member]+'/'):
-            os.makedirs(new_data_path+objects[member]+'/')
-        if not os.path.exists(new_data_path + objects[member]+'/'):
-            os.makedirs(new_data_path+objects[member]+'/')
+    if not os.path.exists(new_data_path+'/train/'):
+        os.makedirs(new_data_path+'/train/')
+
+    if not os.path.exists(new_data_path+'/validation/'):
+        os.makedirs(new_data_path+'/validation/')
+
 
 
 # Daten in neues Verzeichnis kopieren
-
-    folder_list = ["/train", "/test"]
-
+    
+    folder_list = ["/ground_truth"]
+    counter = 0
     for member in range(len(objects)):
         for i in range(len(folder_list)):
             scr_dir2 = scr_dir+objects[member]+folder_list[i]
             labels = os.listdir(scr_dir2)
             for n in range(len(labels)):
-                if labels[n] == "good":
+                if counter <= val_size:
                     #print(glob.iglob(os.path.join(scr_dir2+labels[n], "*.png")))
                     #print(os.path.join(scr_dir2+labels[n], "*.png"))
                     for jpgfile in glob.iglob(os.path.join(scr_dir2+"/"+labels[n], "*.png")):
                         filename = str(uuid.uuid4())+"_"+objects[member]
-                        shutil.copy(jpgfile, dst_dir +
-                                    objects[member]+'/'+filename+'.png')
+                        shutil.copy(jpgfile, dst_dir +'/validation/'+filename+'.png')
                 else:
                     for jpgfile in glob.iglob(os.path.join(scr_dir2+"/"+labels[n], "*.png")):
                         filename = str(uuid.uuid4())+"_"+objects[member]
-                        shutil.copy(jpgfile, dst_dir +
-                                    objects[member]+'/'+filename+'.png')
+                        shutil.copy(jpgfile, dst_dir +'/train/'+filename+'.png')
+                counter=counter+1
+                        

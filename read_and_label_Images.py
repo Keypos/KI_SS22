@@ -1,4 +1,5 @@
 from hashlib import new
+from re import M
 
 
 def read_and_label_Images(old_data_path, new_data_path):
@@ -59,11 +60,11 @@ def read_and_label_Images(old_data_path, new_data_path):
                     #print(glob.iglob(os.path.join(scr_dir2+labels[n], "*.png")))
                     #print(os.path.join(scr_dir2+labels[n], "*.png"))
                     for jpgfile in glob.iglob(os.path.join(scr_dir2+"/"+labels[n], "*.png")):
-                        filename = str(uuid.uuid4())
+                        filename = str(uuid.uuid4())+"_"+objects[member]
                         shutil.copy(jpgfile, dst_dir +
                                     objects[member]+'/good/'+filename+'.png')
                 else:
                     for jpgfile in glob.iglob(os.path.join(scr_dir2+"/"+labels[n], "*.png")):
-                        filename = str(uuid.uuid4())
+                        filename = str(uuid.uuid4())+"_"+objects[member]
                         shutil.copy(jpgfile, dst_dir +
                                     objects[member]+'/bad/'+filename+'.png')
