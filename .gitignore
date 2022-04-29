@@ -12,7 +12,10 @@ mvtec_anomaly_detection/toothbrush/
 mvtec_anomaly_detection/transistor/
 mvtec_anomaly_detection/wood/
 mvtec_anomaly_detection/zipper/
+
 orginal_Dataset/
+Datasets/
+*.h5
 *.jpg
 *.png
 
