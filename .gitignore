@@ -15,7 +15,7 @@ mvtec_anomaly_detection/zipper/
 
 orginal_Dataset/
 Datasets/
-*.h5
+Models/A1_TLOO.h5
 *.jpg
 *.png
 
