@@ -37,6 +37,9 @@ def read_and_label_Images(old_data_path, new_data_path):
 
     if not os.path.exists(new_data_path):
         os.makedirs(new_data_path)
+    else:
+        print("Pfad existiert schon")
+        return
 
     for member in range(len(objects)):
         if not os.path.exists(new_data_path + objects[member]):
